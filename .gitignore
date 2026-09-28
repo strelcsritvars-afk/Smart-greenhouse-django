@@ -1,0 +1,7 @@
+.env
+config.h
+
+# Ignore Python cache & database files
+__pycache__/
+*.pyc
+db.sqlite3
