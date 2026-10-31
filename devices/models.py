@@ -25,7 +25,7 @@ class ESPDevice(models.Model):
 
 
 class TelemetryData(models.Model):
-    """
+    """ 
     Stores historical sensor readings over time.
     Every single ping from an ESP32 creates a new row here.
     """

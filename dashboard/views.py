@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.template import loader
 from django.core.paginator import Paginator
@@ -12,6 +12,9 @@ import devices.models as models
 
 def dashboard_data(request):
 
+    if not request.user.is_authenticated:
+        return redirect('login')
+
     period = request.GET.get("period", "week")
     today = timezone.localdate()
 
@@ -19,9 +22,12 @@ def dashboard_data(request):
         start_date = today
     elif period == "week":
         start_date = today - timedelta(days=today.weekday())
-    else:
+    elif period == "month":
         period = "month"
         start_date = today.replace(day=1)
+    else:
+        period = "all"
+        start_date = timezone.datetime.min.date()
 
 
     #List for humidity readings from the database
@@ -52,3 +58,4 @@ def dashboard_data(request):
     }
 
     return render(request, "dashboard_main.html", context)
+
