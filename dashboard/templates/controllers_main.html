@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Smart Greenhouse{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-2 border-bottom">
+  <h1 class="h2">Controllers</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+  </div>
+</div>
+
+<a class="btn btn-primary" href="{% url 'controller_add' %}">Add controller</a>
+<a class="btn btn-outline-secondary"
+   href="?edit={% if edit_mode %}0{% else %}1{% endif %}"
+   aria-label="Toggle edit mode">✏</a>
+
+<table class="table plant-table controller-table">
+  <colgroup>
+    <col style="width: 45%">
+    <col style="width: 35%">
+    {% if edit_mode %}<col style="width: 20%">{% endif %}
+  </colgroup>
+
+  <thead>
+    <tr>
+      <th>Controller</th>
+      <th>Readings</th>
+      <th>Device ID</th>
+      {% if edit_mode %}<th>Actions</th>{% endif %}
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for controller in controllers %}
+      <tr>
+        <td>
+          <details class="plant-details">
+            <summary>{{ controller.name }}</summary>
+            <ul class="mt-2 mb-0">
+              {% for plant in controller.plants.all %}
+                <li>{{ plant.name }}</li>
+              {% empty %}
+                <li>No plants connected</li>
+              {% endfor %}
+            </ul>
+          </details>
+        </td>
+
+    <td>
+      {% for reading in controller.latest_readings %}
+        <div>Air humidity: {{ reading.air_humidity }}</div>
+        <div>Temperature: {{ reading.air_temperature }}</div>
+        <div>Soil humidity: {{ reading.soil_humidity }}</div>
+      {% empty %}
+        No readings available
+      {% endfor %}
+    </td>
+
+        <td>{{ controller.device_id }}</td>
+
+        {% if edit_mode %}
+          <td>
+            <a class="btn btn-sm btn-outline-light"
+               href="{% url 'controller_edit' controller.pk %}">Edit</a>
+            <a class="btn btn-sm btn-outline-light"
+               href="{% url 'controller_add_plant' controller.pk %}">Add plant</a>
+            <form method="post"
+                  action="{% url 'controller_delete' controller.pk %}"
+                  class="mb-0">
+              {% csrf_token %}
+              <button class="btn btn-sm btn-outline-light" type="submit">Delete</button>
+            </form>
+          </td>
+        {% endif %}
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="{% if edit_mode %}3{% else %}2{% endif %}">
+          No controllers found.
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

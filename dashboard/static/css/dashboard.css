@@ -130,3 +130,36 @@ html[data-bs-theme="dark"] .sidebar .nav-link .feather {
 html[data-bs-theme="dark"] .sidebar-heading {
   color: #adb5bd !important;
 }
+
+.plant-details summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.plant-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.plant-details summary::before {
+  content: ">";
+  display: inline-block;
+  margin-right: 0.5rem;
+  transition: transform 0.15s ease;
+}
+
+.plant-details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.plant-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.plant-table .plant-details p {
+  overflow-wrap: anywhere;
+}
+
+.controller-table td {
+  vertical-align: top;
+}
