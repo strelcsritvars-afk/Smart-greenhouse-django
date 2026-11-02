@@ -36,9 +36,12 @@
         <button id="theme-toggle" class="btn btn-sm theme-toggle-float" type="button" aria-label="Switch to dark mode" title="Switch theme">
             <i class="bi bi-moon-fill" aria-hidden="true"></i>
         </button>
-        <button class="btn btn-sm btn-outline-secondary" type="button" id="logout-button">
-          Logout
-        </button>
+        <form method="post" action="{% url 'logout' %}" class="d-inline">
+          {% csrf_token %}
+          <button class="btn btn-sm btn-outline-secondary" type="submit">
+            Logout
+          </button>
+        </form>
     </div>
   </div>
 </header>

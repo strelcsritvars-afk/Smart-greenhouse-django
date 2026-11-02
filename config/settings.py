@@ -143,7 +143,8 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = '/dashboard/'  # Redirect to dashboard after login
-LOGOUT_REDIRECT_URL = '/login/'  # Redirect to login page after logout
+LOGIN_URL = '/auth/login/'
+LOGOUT_REDIRECT_URL = '/auth/login/'  # Redirect to login page after logout
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign in | PlantSystem</title>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap_icons/bootstrap-icons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+  </head>
+  <body class="login-page">
+    <header class="login-topbar">
+      <a class="login-brand" href="/">
+        <span class="login-brand-icon"><i class="bi bi-flower1" aria-hidden="true"></i></span>
+        <span>PlantSystem</span>
+      </a>
+      <span class="login-topbar-label">Smart Greenhouse</span>
+    </header>
+
+    <main class="login-main">
+      <section class="login-card" aria-labelledby="login-title">
+        <div class="login-icon" aria-hidden="true">
+          <i class="bi bi-person"></i>
+        </div>
+        <div class="login-heading">
+          <h1 id="login-title">Welcome back</h1>
+          <p>Sign in to manage your plants and controllers.</p>
+        </div>
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+          {% endif %}
+
+          <div class="mb-3">
+            <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+            <input class="form-control" type="text" name="{{ form.username.name }}"
+                   id="{{ form.username.id_for_label }}" autocomplete="username"
+                   value="{{ form.username.value|default_if_none:'' }}" required autofocus>
+            {% if form.username.errors %}
+              <div class="invalid-feedback d-block" role="alert">{{ form.username.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label" for="{{ form.password.id_for_label }}">Password</label>
+            <input class="form-control" type="password" name="{{ form.password.name }}"
+                   id="{{ form.password.id_for_label }}" autocomplete="current-password" required>
+            {% if form.password.errors %}
+              <div class="invalid-feedback d-block" role="alert">{{ form.password.errors }}</div>
+            {% endif %}
+          </div>
+
+          <button class="btn btn-primary w-100 login-submit" type="submit">
+            Sign in <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+          </button>
+        </form>
+
+        <div class="login-divider"><span>PLANT CARE WORKSPACE</span></div>
+        <p class="login-footer mb-0">
+          <i class="bi bi-shield-lock me-1" aria-hidden="true"></i>
+          Your greenhouse dashboard is private to your account.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
